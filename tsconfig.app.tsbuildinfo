@@ -1,0 +1,1 @@
+{"root":["./src/background.ts","./src/main.tsx","./src/optionslocal.tsx","./src/vite-env.d.ts","./src/chrome-extension/options/index.tsx","./src/chrome-extension/popup/index.tsx","./src/contentscripts/praccteam.ts"],"version":"5.7.3"}
