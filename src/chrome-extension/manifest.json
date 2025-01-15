@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Pracc Optimizer",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "author": {
     "name": "Leon Anneken",
     "email": "lanneken09@gmail.com"
@@ -25,5 +25,5 @@
     "service_worker": "background.js"
   },
   "options_page": "options.html",
-  "description": "Enhance your pracc scrim searching experience"
+  "description": "Enhance your pracc scrim searching experience. This product is not affiliated with pracc.com"
 }

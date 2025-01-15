@@ -11,7 +11,10 @@ import { cn } from "@/lib/utils";
 
 // Code
 
-export function Navbar() {
+type Props = {
+    userIcon?: string;
+}
+export function Navbar(props: Props) {
     return <div className="flex flex-col gap-2">
         <div className="flex flex-row items-center justify-between p-2">
             <h1 className={cn("text-foreground text-xl")}>Enhance your pracc experience</h1>
@@ -19,7 +22,7 @@ export function Navbar() {
                 <ModeToggle />
                 <Avatar>
                     <AvatarFallback><CircleUser /></AvatarFallback>
-                    <AvatarImage src=""></AvatarImage>
+                    <AvatarImage src={props.userIcon}></AvatarImage>
                 </Avatar>
             </div>
         </div>

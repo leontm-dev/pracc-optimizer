@@ -1,7 +1,7 @@
 // Imports
 
 import "../global.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // Components
 
@@ -39,10 +39,14 @@ const settings: {
 export const Popup = () => {
   const [loading, isLoading] = useState(true);
   const [permissions, setPermissions] = useState<string[]>([]);
+  const image = useRef<string>();
   useEffect(() => {
     chrome.storage.sync.get(["permissions"], (result) => {
       setPermissions(result.permissions || []);
-      isLoading(false);
+      chrome.storage.sync.get("userIcon", (result) => {
+        image.current = result.userIcon;
+        isLoading(false);
+      })
     });
   }, []);
   const updatePersmission = async (permissions: string[]) => {
@@ -53,7 +57,7 @@ export const Popup = () => {
     <div className={cn("bg-background w-full h-full")}>
       {loading ? <Loader active={loading} type="pacman" /> : (
         <>
-          <Navbar />
+          <Navbar userIcon={image.current} />
           <Tabs className="p-2" defaultValue="valorant">
             <TabsList className="w-full">
               <TabsTrigger className="w-max" value="valorant">
