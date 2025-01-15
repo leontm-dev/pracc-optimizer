@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Pracc Optimizer",
+  "version": "0.0.4",
+  "author": {
+    "name": "Leon Anneken",
+    "email": "lanneken09@gmail.com"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "js": ["praccTeamContentScript.js"],
+      "css": ["/contentCSS/praccTeamContentScript.css"],
+      "matches": ["https://*.pracc.com/team/*"]
+    }
+  ],
+  "permissions": ["storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options.html",
+  "description": "Enhance your pracc scrim searching experience"
+}
