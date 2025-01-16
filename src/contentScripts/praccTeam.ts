@@ -8,6 +8,11 @@ const loadTrackerButtons = () => {
       continue;
     }
     const name = nameContainer.children[0].innerHTML;
+    const trackerButton = player.children[2];
+    if (trackerButton) {
+      console.log("Tracker button already exists");
+      continue;
+    }
 
     if (name.includes("#")) {
       const button = document.createElement("button");
@@ -122,6 +127,13 @@ const addBlockListButton = async () => {
   const id = window.location.href.split("/")[4];
 
   const buttonList = document.getElementsByClassName("css-1xhj18k")[0];
+  const blockButton = document.getElementsByClassName(
+    "pracc-optimizer-block-button"
+  )[0];
+  if (blockButton) {
+    console.log("Block button already exists");
+    return;
+  }
   if (!buttonList) {
     console.error("Button list not found");
     return;
@@ -152,14 +164,28 @@ const addBlockListButton = async () => {
   buttonList.appendChild(button);
   console.log("Added block list button");
 };
+/* function getCompletedReadyState() {
+  return new Promise((resolve) => {
+    document.onreadystatechange = () => {
+      if (document.readyState === "complete") {
+        resolve("completed");
+      }
+    };
+  });
+} */
+const observer = new MutationObserver(function () {
+  (async () => {
+    const permissions = (await chrome.storage.sync.get("permissions"))
+      .permissions;
+    console.log(permissions);
+    console.log("praccTeam content script loaded successfully");
+    if (permissions.includes("tracker-buttons")) loadTrackerButtons();
+    if (permissions.includes("description-links")) loadDescriptionLinks();
+    if (permissions.includes("block-list")) addBlockListButton();
+    console.log("praccTeam content script finished");
+  })();
+});
 
-window.onload = async () => {
-  const permissions = (await chrome.storage.sync.get("permissions"))
-    .permissions;
-  console.log(permissions);
-  console.log("praccTeam content script loaded successfully");
-  if (permissions.includes("tracker-buttons")) loadTrackerButtons();
-  if (permissions.includes("description-links")) loadDescriptionLinks();
-  if (permissions.includes("block-list")) addBlockListButton();
-  console.log("praccTeam content script finished");
-};
+const target = document.querySelector("body");
+const config = { childList: true };
+observer.observe(target!, config);
