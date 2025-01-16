@@ -21,19 +21,29 @@ const settings: {
 }[] = [
     {
       name: "Tracker Buttons",
-      description: "Add buttons next to player names to quickly get to their VALORANT tracker profile. (REQUIRES RELOAD TO APPLY BUTTONS)",
+      description: "Add buttons next to player names to quickly get to their VALORANT tracker profile.",
       value: "tracker-buttons"
     },
     {
       name: "Description Links",
-      description: "Filter links from the team description and display them in a separate container. (REQUIRES RELOAD TO FILTER LINKS)",
+      description: "Filter links from the team description and display them in a separate container to easily go to the references the team gave you.",
       value: "description-links"
     },
     {
       name: "Block list",
-      description: "Block teams without for free",
+      description: "Block teams for free. Adds a button to every team page and a checkbox to the search page to only see not blocked teams.",
       value: "block-list"
+    },
+    {
+      name: "Favourite list",
+      description: "Favourite teams for free. Adds a button to every team page and a checkbox to the search page to only see favourited teams.",
+      value: "favourite-list"
     }
+    /* {
+      name: "Auto Match Dates",
+      description: "Automatically turn on match dates in the pracc search page",
+      value: "auto-match-dates"
+    } */
   ]
 
 export const Popup = () => {
