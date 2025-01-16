@@ -12,7 +12,7 @@ const observer = new MutationObserver(function () {
       console.error("User icon src not found");
       return;
     }
-    chrome.storage.sync.set({ userIcon: userIcon.src });
+    chrome.storage.sync.set({ userIcon: encodeURIComponent(userIcon.src) });
     console.log("praccMain content script finished");
   })();
 });

@@ -10,15 +10,15 @@
     "default_popup": "popup.html"
   },
   "icons": {
-    "16": "public/16.png",
-    "32": "public/32.png",
-    "48": "public/48.png",
-    "128": "public/128.png"
+    "16": "public%2F16.png",
+    "32": "public%2F32.png",
+    "48": "public%2F48.png",
+    "128": "public%2F128.png"
   },
   "content_scripts": [
     {
       "js": ["praccTeamContentScript.js"],
-      "css": ["/contentCSS/praccTeamContentScript.css"],
+      "css": ["/contentCSS%2FpraccTeamContentScript.css"],
       "matches": ["https://*.pracc.com/team/*"]
     },
     {
