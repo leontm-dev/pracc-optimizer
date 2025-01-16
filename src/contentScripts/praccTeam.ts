@@ -58,13 +58,15 @@ const loadDescriptionLinks = () => {
     .filter((link) => link.trim().startsWith("https://"));
   linksInLines.forEach((link) => {
     const hostname = new URL(link).hostname;
-    const allowedHosts = {
+    const allowedHosts: {
+      [key: string]: "tracker" | "vlr" | "rib" | "twitter" | "discord" | "x";
+    } = {
       "tracker.gg": "tracker",
       "discord.gg": "discord",
       "x.com": "x",
       "twitter.com": "x",
       "rib.gg": "rib",
-      "vlr.gg": "vlr"
+      "vlr.gg": "vlr",
     };
     if (hostname in allowedHosts) {
       let text;
