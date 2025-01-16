@@ -91,6 +91,7 @@ export const Popup = () => {
                       <Setting title={setting.name} Icon={setting.icon} value={setting.value} description={setting.description} permissions={permissions} updatePermissions={updatePermissions} />
                     )
                   })}
+                  <Button className={cn("text-foreground")} onClick={() => window.open("https://github.com/leontm-dev/pracc-optimizer/issues")} variant={"outline"}>Missing something? Send us your ideas</Button>
                 </div>
               </TabsContent>
               <TabsContent value="global" className="flex flex-col items-center justify-center gap-1">
