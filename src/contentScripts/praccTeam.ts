@@ -42,6 +42,11 @@ const loadDescriptionLinks = () => {
     console.error("Description not found");
     return;
   }
+  const linksContainerPre = document.getElementById("pracc-optimizer-links");
+  if (linksContainerPre) {
+    console.log("Links already exist");
+    return;
+  }
   const links: {
     type: "tracker" | "vlr" | "rib" | "twitter" | "discord" | "x";
     link: string;
@@ -77,6 +82,7 @@ const loadDescriptionLinks = () => {
   );
   const linksContainer = document.createElement("div");
   linksContainer.classList.add("paper-content");
+  linksContainer.id = "pracc-optimizer-links";
   links.forEach((link) => {
     const linkContainer = document.createElement("div");
     linkContainer.classList.add("link-pracc-optimizer");
