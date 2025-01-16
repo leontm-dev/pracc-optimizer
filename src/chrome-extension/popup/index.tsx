@@ -31,12 +31,12 @@ const settings: {
       name: "Favourite list",
       description: "Favourite teams for free. Adds a button to every team page and a checkbox to the search page to only see favourited teams.",
       value: "favourites"
-    }
-    /* {
+    },
+    {
       name: "Auto Match Dates",
       description: "Automatically turn on match dates in the pracc search page",
       value: "auto-match-dates"
-    } */
+    }
   ]
 
 export const Popup = () => {
