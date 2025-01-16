@@ -16,7 +16,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider>
       <TooltipProvider>
-        <div className="w-[600px] h-[500px] flex">
+        <div className="w-[600px] h-[500px] flex flex-col items-center justify-start">
           <Popup />
         </div>
       </TooltipProvider>

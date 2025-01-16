@@ -1,16 +1,16 @@
 // Imports
 
 import { useEffect, useState } from "react";
-import { Pause, Play } from "lucide-react";
+import { LucideProps } from "lucide-react";
 
 // Components
 
-import { AccordionContent, AccordionTrigger, AccordionItem } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+import { Switch } from "./ui/switch";
 
 // Project-Imports
 
 import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 // Code
 
@@ -20,6 +20,7 @@ type Props = {
     description: string;
     permissions: string[];
     updatePermissions: (permissions: string[]) => void;
+    Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 }
 export function Setting(props: Props) {
     const [isOn, setIsOn] = useState(false);
@@ -31,22 +32,24 @@ export function Setting(props: Props) {
         }
     }, [props.permissions, props.value]);
     return (
-        <AccordionItem value={props.value}>
-            <AccordionTrigger className={"text-xl text-wrap text-foreground"}>{props.title}</AccordionTrigger>
-            <AccordionContent>
-                <div className="flex flex-row items-center justify-between gap-1">
-                    <p className={cn("text-wrap text-foreground")}>{props.description}</p>
-                    <Button variant={isOn ? "destructive" : "secondary"} onClick={() => {
-                        if (props.permissions.includes(props.value)) {
-                            props.updatePermissions(props.permissions.filter(permission => permission !== props.value));
-                            setIsOn(false);
-                        } else {
-                            props.updatePermissions([...props.permissions, props.value]);
-                            setIsOn(true);
-                        }
-                    }}>{isOn ? <Pause /> : <Play />}</Button>
-                </div>
-            </AccordionContent>
-        </AccordionItem>
+        <Card className="w-full">
+            <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="flex flex-row items-center gap-2">
+                    <props.Icon className={cn("text-primary")} />
+                    {props.title}
+                </CardTitle>
+                <Switch checked={isOn} onCheckedChange={() => {
+                    setIsOn(!isOn);
+                    if (isOn) {
+                        props.updatePermissions(props.permissions.filter((permission) => permission !== props.value));
+                    } else {
+                        props.updatePermissions([...props.permissions, props.value]);
+                    }
+                }} />
+            </CardHeader>
+            <CardContent>
+                {props.description}
+            </CardContent>
+        </Card>
     )
 }
