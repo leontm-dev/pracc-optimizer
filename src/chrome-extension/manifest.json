@@ -16,6 +16,10 @@
       "matches": ["https://*.pracc.com/team/*"]
     },
     {
+      "js": ["praccSearchContentScript.js"],
+      "matches": ["https://*.pracc.com/search*"]
+    },
+    {
       "js": ["praccMainContentScript.js"],
       "matches": ["https://*.pracc.com/*"]
     }
