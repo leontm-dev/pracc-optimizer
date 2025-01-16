@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Pracc Optimizer",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": {
     "name": "Leon Anneken",
     "email": "lanneken09@gmail.com"
@@ -17,6 +17,7 @@
     },
     {
       "js": ["praccSearchContentScript.js"],
+      "ccs": ["praccSearchContentScript.css"],
       "matches": ["https://*.pracc.com/search*"]
     },
     {
