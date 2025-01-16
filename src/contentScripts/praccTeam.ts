@@ -57,22 +57,34 @@ const loadDescriptionLinks = () => {
     .split(/\s+/)
     .filter((link) => link.trim().startsWith("https://"));
   linksInLines.forEach((link) => {
-    if (new URL(link).hostname.includes("tracker.gg")) {
-      const text = decodeURI(link.split("/")[6]).replace(/%23/g, "#");
-      links.push({ type: "tracker", link, text });
-    } else if (new URL(link).hostname.includes("discord.gg")) {
-      links.push({ type: "discord", link });
-    } else if (new URL(link).hostname.includes("x.com")) {
-      const text = link.split("/")[3];
-      links.push({ type: "x", link, text });
-    } else if (new URL(link).hostname.includes("twitter.com")) {
-      const text = link.split("/")[3];
-      links.push({ type: "x", link, text });
-    } else if (new URL(link).hostname.includes("rib.gg")) {
-      links.push({ type: "rib", link });
-    } else if (new URL(link).hostname.includes("vlr.gg")) {
-      const text = link.split("/")[5];
-      links.push({ type: "vlr", link, text });
+    const hostname = new URL(link).hostname;
+    const allowedHosts = {
+      "tracker.gg": "tracker",
+      "discord.gg": "discord",
+      "x.com": "x",
+      "twitter.com": "x",
+      "rib.gg": "rib",
+      "vlr.gg": "vlr"
+    };
+    if (hostname in allowedHosts) {
+      let text;
+      switch (hostname) {
+        case "tracker.gg":
+          text = decodeURI(link.split("/")[6]).replace(/%23/g, "#");
+          links.push({ type: allowedHosts[hostname], link, text });
+          break;
+        case "x.com":
+        case "twitter.com":
+          text = link.split("/")[3];
+          links.push({ type: allowedHosts[hostname], link, text });
+          break;
+        case "vlr.gg":
+          text = link.split("/")[5];
+          links.push({ type: allowedHosts[hostname], link, text });
+          break;
+        default:
+          links.push({ type: allowedHosts[hostname], link });
+      }
     }
   });
   linksOutOfDescriptionContainer.classList.add(
