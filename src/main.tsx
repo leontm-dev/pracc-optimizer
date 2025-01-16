@@ -8,15 +8,18 @@ import "./chrome-extension/global.css";
 // Imports
 
 import { ThemeProvider } from "./components/theme-provider";
+import { TooltipProvider } from "./components/ui/tooltip";
 
 // Code
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider>
-      <div className="w-[600px] h-[500px] flex">
-        <Popup />
-      </div>
+      <TooltipProvider>
+        <div className="w-[600px] h-[500px] flex">
+          <Popup />
+        </div>
+      </TooltipProvider>
     </ThemeProvider>
   </StrictMode>
 );
