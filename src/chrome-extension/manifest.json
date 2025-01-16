@@ -7,7 +7,8 @@
     "email": "lanneken09@gmail.com"
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_title": "Enhance your experience on pracc.com"
   },
   "icons": {
     "16": "public%2F16.png",
@@ -15,6 +16,7 @@
     "48": "public%2F48.png",
     "128": "public%2F128.png"
   },
+  "short_name": "Pracc Optimizer",
   "content_scripts": [
     {
       "js": ["praccTeamContentScript.js"],
