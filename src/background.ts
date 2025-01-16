@@ -1,5 +1,5 @@
 chrome.storage.sync.get("userIcon", (data) => {
-  if (!data.userIcon) {
+  if (!data || !data.userIcon) {
     console.log("Error");
     return;
   }
