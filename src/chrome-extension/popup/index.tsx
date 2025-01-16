@@ -1,18 +1,11 @@
-// Imports
-
 import "../global.css";
 import { useState, useEffect, useRef } from "react";
-
-// Components
-
 import { Navbar } from "@/components/navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { Setting } from "@/components/setting";
 import { Accordion } from "@/components/ui/accordion";
 import Loader from 'react-loaders'
-
-// Code
 
 const settings: {
   name: string;
