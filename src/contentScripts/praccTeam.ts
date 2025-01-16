@@ -58,7 +58,7 @@ const loadDescriptionLinks = () => {
     .filter((link) => link.trim().startsWith("https://"));
   linksInLines.forEach((link) => {
     if (new URL(link).hostname.includes("tracker.gg")) {
-      const text = decodeURI(link.split("/")[6]).replace("%23", "#");
+      const text = decodeURI(link.split("/")[6]).replace(/%23/g, "#");
       links.push({ type: "tracker", link, text });
     } else if (new URL(link).hostname.includes("discord.gg")) {
       links.push({ type: "discord", link });
