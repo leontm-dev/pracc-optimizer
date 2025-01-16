@@ -6,16 +6,17 @@ import { Button } from "@/components/ui/button"
 
 import { useTheme } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
+import { Moon, Sun } from "lucide-react";
 
 // Code
 
 export function ModeToggle() {
     const { setTheme, theme } = useTheme();
     return (
-        <Button variant={"outline"} className={cn("text-foreground")} onClick={() => {
+        <Button variant={"outline"} className={cn("fill-foreground")} onClick={() => {
             setTheme(theme === "dark" ? "light" : "dark")
         }}>
-            Switch theme
+            {theme === "dark" ? <Moon className={cn("fill-foreground")} /> : <Sun className={cn("text-foreground")} />}
         </Button>
     )
 }
