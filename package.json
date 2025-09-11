@@ -30,7 +30,7 @@
     "react-spinners": "^0.15.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "vite-plugin-static-copy": "^1.0.6"
+    "vite-plugin-static-copy": "^2.3.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
