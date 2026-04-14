@@ -33,19 +33,20 @@ const loadTrackerButtons = () => {
 };
 const loadDescriptionLinks = () => {
   console.log("Loading description links");
-  const pageContainer = document.getElementsByClassName("jss24")[0].children[0];
-  const linksOutOfDescriptionContainer = document.createElement("div");
+  const descriptionBlock =
+    document.getElementsByClassName("css-k1nffj")[0].children[0];
   const teamDescription = document.getElementById(
     "mui-5"
   ) as HTMLTextAreaElement | null;
   if (!teamDescription || !teamDescription.value) {
-    console.error("Description not found");
+    console.log("Team has no description");
     return;
   }
-  const linksContainerPre = document.getElementById("pracc-optimizer-links");
-  if (linksContainerPre) {
-    console.log("Links already exist");
-    return;
+
+  if (document.getElementById("pracc-optimizer-links")) {
+    descriptionBlock.removeChild(
+      document.getElementById("pracc-optimizer-links")!
+    );
   }
   const links: {
     type: "tracker" | "vlr" | "rib" | "twitter" | "discord" | "x";
@@ -89,11 +90,6 @@ const loadDescriptionLinks = () => {
       }
     }
   });
-  linksOutOfDescriptionContainer.classList.add(
-    "MuiPaper-root",
-    "MuiPaper-elevation1",
-    "MuiPaper-rounded"
-  );
   const linksContainer = document.createElement("div");
   linksContainer.classList.add("paper-content");
   linksContainer.id = "pracc-optimizer-links";
@@ -137,8 +133,8 @@ const loadDescriptionLinks = () => {
     linkContainer.appendChild(linkElement);
     linksContainer.appendChild(linkContainer);
   });
-  linksOutOfDescriptionContainer.appendChild(linksContainer);
-  pageContainer.appendChild(linksOutOfDescriptionContainer);
+  console.log(links);
+  descriptionBlock.appendChild(linksContainer);
   console.log("Loaded description links");
 };
 const addBlockListButton = async () => {
