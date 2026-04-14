@@ -7,6 +7,7 @@ const loadTrackerButtons = () => {
       console.error("Name container not found");
       continue;
     }
+    if (nameContainer.children[0].tagName !== "span") continue;
     const name = nameContainer.children[0].innerHTML;
     const trackerButton = player.children[2];
     if (trackerButton) {
@@ -16,12 +17,22 @@ const loadTrackerButtons = () => {
 
     if (name.includes("#")) {
       const button = document.createElement("button");
-      button.className = "valorant-tracker-button-pracc-optimizer";
+      const response = fetch(
+        "https://api.henrikdev.xyz/valorant/v1/account/{name}/{tag}",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "YOUR_API_KEY",
+            Accept: "*/*",
+          },
+        },
+      ).then((res) => res.json());
+      response.button.className = "valorant-tracker-button-pracc-optimizer";
       button.onclick = () => {
         window.open(
           `https://tracker.gg/valorant/profile/riot/${encodeURIComponent(
-            name
-          )}/overview?playlist=competitive`
+            name,
+          )}/overview?playlist=competitive`,
         );
       };
       button.innerHTML =
@@ -36,7 +47,7 @@ const loadDescriptionLinks = () => {
   const descriptionBlock =
     document.getElementsByClassName("css-k1nffj")[0].children[0];
   const teamDescription = document.getElementById(
-    "mui-5"
+    "mui-5",
   ) as HTMLTextAreaElement | null;
   if (!teamDescription || !teamDescription.value) {
     console.log("Team has no description");
@@ -45,7 +56,7 @@ const loadDescriptionLinks = () => {
 
   if (document.getElementById("pracc-optimizer-links")) {
     descriptionBlock.removeChild(
-      document.getElementById("pracc-optimizer-links")!
+      document.getElementById("pracc-optimizer-links")!,
     );
   }
   const links: {
@@ -144,7 +155,7 @@ const addBlockListButton = async () => {
 
   const buttonList = document.getElementsByClassName("css-1xhj18k")[0];
   const blockButton = document.getElementsByClassName(
-    "pracc-optimizer-block-button"
+    "pracc-optimizer-block-button",
   )[0];
   if (blockButton) {
     console.log("Block button already exists");
