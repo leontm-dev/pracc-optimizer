@@ -1,36 +1,66 @@
-# pracc-optimiter Extension
+[powered-image]: https://img.shields.io/badge/Powered%20by-Extension.js-0971fe
+[powered-url]: https://extension.js.org
 
-This extension allows you to enhance your experience on the pracc.com site. Use the built-in UI to toggle certain settings that will enable to do improve your experience.
+![Powered by Extension.js][powered-image]
 
-Current version: v0.1.0
+# React Sidebar (shadcn) Example
 
-The whole project is not associated with pracc.com or any other brand cooperating with them. It is just a side-project. If you got any copyright issues, please write an email to
-[lanneken09@gmail.com](mailto:lanneken09@gmail.com) (only business inquires)
+What you’ll see: a browser sidebar (side panel) with a React page composed using shadcn/ui components.
 
-## License
-
-[MIT](https://github.com/leontm-dev/pracc-optimizer/blob/main/LICENSE)
+How it works: the extension registers a sidebar panel and renders a React UI built from shadcn/ui primitives.
 
 ## Installation
 
-I hope that I will be able to upload this extension to the chrome webstore for easier downloads but at the moment, follow this tutorial:
+```bash
+npx extension@latest create <project-name> --template sidebar-shadcn
+cd <project-name>
+npm install
+```
 
-1. Clone this repo by running: `git clone https://github.com/leontm-dev/pracc-optimizer.git my-extension-folder`
-2. Get into the newly created folder with `cd my-extension-folder`
-3. Run `npm run build`, for this you need to have [Node.js](https://nodejs.org/en) installed
-4. Go to the extensions manager of your browser, for Chrome you will find it under [chrome://extensions](chrome://extensions)
-5. Click on the button that says "Load unpacked"
-6. Now your file manager should have opened, navigate to the folder "my-extension-folder" and click on "dist". Select this folder and the window should lead you back to chrome.
-7. You are done
+## Commands
 
-## Contributing
+### dev
 
-Contributions are always welcome!
+Run the extension in development mode.
 
-See `contributing.md` for ways to get started.
+```bash
+npm run dev
+```
 
-Please adhere to this project's `code of conduct`.
+### build
 
-## Authors
+Build the extension for production.
 
-- [@leontm-dev](https://www.github.com/leontm-dev)
+```bash
+npm run build
+```
+
+### preview
+
+Preview the extension in the browser.
+
+```bash
+npm run preview
+```
+
+## Browser targets
+
+Chromium is the default. You can explicitly target Chrome, Edge, or Firefox:
+
+```bash
+# Chromium (default)
+npm run dev
+
+# Chrome
+npm run dev -- --browser=chrome
+
+# Edge
+npm run dev -- --browser=edge
+
+# Firefox
+npm run dev -- --browser=firefox
+```
+
+## Learn more
+
+Learn more in the [Extension.js docs](https://extension.js.org).

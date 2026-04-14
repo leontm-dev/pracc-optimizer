@@ -1,25 +1,13 @@
-chrome.storage.sync.get("userIcon", (data) => {
-  if (!data || !data.userIcon) {
-    console.log("Error");
-    return;
-  }
+const isFirefoxLike =
+  import.meta.env.EXTENSION_PUBLIC_BROWSER === 'firefox' ||
+  import.meta.env.EXTENSION_PUBLIC_BROWSER === 'gecko-based'
 
-  chrome.action
-    .setIcon({ path: decodeURIComponent(data.userIcon) })
-    .then(() => {
-      console.log("Icon set successfully");
-    })
-    .catch((error) => {
-      console.error("Icon set error", error);
-    });
-});
-chrome.storage.sync.get("blocked", (data) => {
-  if (!data) {
-    console.log("Error");
-    return;
-  }
-
-  if (!data.blocked) {
-    chrome.storage.sync.set({ blocked: [] });
-  }
-});
+if (isFirefoxLike) {
+  browser.browserAction.onClicked.addListener(() => {
+    browser.sidebarAction.open()
+  })
+} else {
+  chrome.action.onClicked.addListener(() => {
+    chrome.sidePanel.setPanelBehavior({openPanelOnActionClick: true})
+  })
+}

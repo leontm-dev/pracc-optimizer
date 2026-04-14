@@ -1,16 +1,16 @@
-import iconUrl from "../images/icon.png";
+import iconUrl from '../images/icon.png'
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { Label } from "../components/ui/label";
-import { Switch } from "../components/ui/switch";
+  CardTitle
+} from '../components/ui/card'
+import {Label} from '../components/ui/label'
+import {Switch} from '../components/ui/switch'
 
-const shadcnLogo = iconUrl;
+const shadcnLogo = iconUrl
 
 export default function SidebarApp() {
   return (
@@ -50,7 +50,7 @@ export default function SidebarApp() {
       </CardContent>
       <CardFooter>
         <p>
-          Learn more in the{" "}
+          Learn more in the{' '}
           <a
             href="https://extension.js.org"
             target="_blank"
@@ -63,5 +63,5 @@ export default function SidebarApp() {
         </p>
       </CardFooter>
     </Card>
-  );
+  )
 }
