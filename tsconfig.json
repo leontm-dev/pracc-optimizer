@@ -1,13 +1,24 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
   "compilerOptions": {
-    "baseUrl": ".",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "preserve",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "esnext",
+    "isolatedModules": true,
+    "skipLibCheck": true,
     "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+      "@/*": ["./*"]
+    },
+    "verbatimModuleSyntax": false
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
 }
