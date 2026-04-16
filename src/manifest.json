@@ -4,13 +4,13 @@
   "firefox:manifest_version": 2,
   "version": "1.0.0",
   "name": "pracc-optimizer",
-  "description": "React-based extension with a sidebar panel. Adds a sidebar with a simple page.",
+  "description": "Optimize your pracc scrim search with custom utils.",
   "icons": {
-    "16": "images/icon.png",
-    "32": "images/icon.png",
-    "48": "images/icon.png",
-    "64": "images/icon.png",
-    "128": "images/icon.png"
+    "16": "images/sizes/16.png",
+    "32": "images/sizes/32.png",
+    "48": "images/sizes/48.png",
+    "64": "images/sizes/64.png",
+    "128": "images/sizes/128.png"
   },
   "chromium:action": {
     "default_icon": {
@@ -19,45 +19,24 @@
       "48": "images/icon.png",
       "64": "images/icon.png",
       "128": "images/icon.png"
-    },
-    "default_title": "Open Side Panel"
+    }
   },
+  "permissions": ["storage"],
   "firefox:browser_action": {
     "default_icon": {
-      "16": "images/icon.png",
-      "32": "images/icon.png",
-      "48": "images/icon.png",
-      "64": "images/icon.png",
-      "128": "images/icon.png"
-    },
-    "default_title": "Open Side Panel"
+      "16": "images/sizes/16.png",
+      "32": "images/sizes/32.png",
+      "48": "images/sizes/48.png",
+      "64": "images/sizes/64.png",
+      "128": "images/sizes/128.png"
+    }
   },
-  "chromium:side_panel": {
-    "default_path": "sidebar/index.html",
-    "default_title": "Side Panel Content"
-  },
-  "firefox:sidebar_action": {
-    "default_panel": "sidebar/index.html",
-    "default_title": "Side Panel Content"
-  },
-  "chromium:permissions": [
-    "sidePanel"
-  ],
-  "background": {
-    "chromium:service_worker": "background.ts",
-    "firefox:scripts": [
-      "background.ts"
-    ]
-  },
+  "options_page": "options/index.html",
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content/scripts.tsx"
-      ]
+      "matches": ["https://pracc.com/team/*"],
+      "js": ["content/scripts.tsx"]
     }
   ],
-  "author": "Your Name"
+  "author": "LeonTM"
 }
