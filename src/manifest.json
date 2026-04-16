@@ -9,16 +9,16 @@
     "16": "images/sizes/16.png",
     "32": "images/sizes/32.png",
     "48": "images/sizes/48.png",
-    "64": "images/sizes/64.png",
+    "64": "images/sizes/128.png",
     "128": "images/sizes/128.png"
   },
   "chromium:action": {
     "default_icon": {
-      "16": "images/icon.png",
-      "32": "images/icon.png",
-      "48": "images/icon.png",
-      "64": "images/icon.png",
-      "128": "images/icon.png"
+      "16": "images/sizes/16.png",
+      "32": "images/sizes/32.png",
+      "48": "images/sizes/48.png",
+      "64": "images/sizes/128.png",
+      "128": "images/sizes/128.png"
     }
   },
   "permissions": ["storage"],
@@ -27,7 +27,7 @@
       "16": "images/sizes/16.png",
       "32": "images/sizes/32.png",
       "48": "images/sizes/48.png",
-      "64": "images/sizes/64.png",
+      "64": "images/sizes/128.png",
       "128": "images/sizes/128.png"
     }
   },
