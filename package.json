@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "pracc-optimizer",
-  "description": "React-based extension with sidebar panel",
+  "description": "Extension to optimize pracc.",
   "version": "3.0.0",
   "license": "MIT",
   "type": "module",
   "author": {
-    "name": "Your Name",
-    "email": "your@email.com",
-    "url": "https://yourwebsite.com"
+    "name": "Leon Anneken",
+    "email": "lanneken09@gmail.com",
+    "url": "https://leontm.me"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.2.2",
