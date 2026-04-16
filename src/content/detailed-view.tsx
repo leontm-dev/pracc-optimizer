@@ -559,25 +559,38 @@ export default function DetailedView() {
           .replace("https://", "")
           .replace("http://", "")
           .replace("www.", "");
-        if (
-          formattedUrl.startsWith("x.com") ||
-          formattedUrl.startsWith("twitter.com")
-        ) {
+
+        let parsedUrl: URL;
+        try {
+          parsedUrl = new URL(url);
+        } catch {
+          return {
+            type: "Unknown",
+            content: url,
+            title: "unknown",
+            display: formattedUrl,
+          };
+        }
+
+        const host = parsedUrl.hostname.toLowerCase().replace(/^www\./, "");
+        const path = parsedUrl.pathname;
+
+        if (host === "x.com" || host === "twitter.com") {
           return {
             type: "Unknown",
             content: url,
             title: "x.com",
             display: formattedUrl,
           };
-        } else if (formattedUrl.startsWith("vlr.gg")) {
-          if (formattedUrl.includes("/player/")) {
+        } else if (host === "vlr.gg") {
+          if (path.includes("/player/")) {
             return {
               type: "Player",
               content: url,
               title: "vlr.gg",
               display: formattedUrl,
             };
-          } else if (formattedUrl.includes("/team/")) {
+          } else if (path.includes("/team/")) {
             return {
               type: "Team",
               content: url,
@@ -592,23 +605,21 @@ export default function DetailedView() {
               display: formattedUrl,
             };
           }
-        } else if (formattedUrl.startsWith("tracker.gg")) {
-          if (formattedUrl.includes("/valorant/premier/teams/")) {
+        } else if (host === "tracker.gg") {
+          if (path.includes("/valorant/premier/teams/")) {
             return {
               type: "Team",
               content: url,
               title: "tracker.gg",
               display: formattedUrl,
             };
-          } else if (formattedUrl.includes("/valorant/profile/riot/")) {
+          } else if (path.includes("/valorant/profile/riot/")) {
             return {
               type: "Player",
               content: url,
               title: "tracker.gg",
               display: decodeURIComponent(
-                formattedUrl
-                  .replace("tracker.gg/valorant/profile/riot/", "")
-                  .split("/")[0],
+                path.replace("/valorant/profile/riot/", "").split("/")[0],
               ),
             };
           } else {
@@ -619,14 +630,14 @@ export default function DetailedView() {
               display: formattedUrl,
             };
           }
-        } else if (formattedUrl.startsWith("liquipedia.net")) {
+        } else if (host === "liquipedia.net") {
           return {
             type: "Unknown",
             content: url,
             title: "liquipedia.net",
             display: formattedUrl,
           };
-        } else if (formattedUrl.startsWith("gamersclub.gg")) {
+        } else if (host === "gamersclub.gg") {
           return {
             type: "Team",
             content: url,
