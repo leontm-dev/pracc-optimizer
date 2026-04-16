@@ -4,9 +4,9 @@
   "rsc": false,
   "tsx": true,
   "tailwind": {
-    "config": "tailwind.config.js",
-    "css": "src/chrome-extension/global.css",
-    "baseColor": "zinc",
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json.schemastore.org/chrome-manifest.json",
+  "chromium:manifest_version": 3,
+  "firefox:manifest_version": 2,
+  "version": "1.0.0",
+  "name": "pracc-optimizer",
+  "description": "Optimize your pracc scrim search with custom utils.",
+  "icons": {
+    "16": "images/sizes/16.png",
+    "32": "images/sizes/32.png",
+    "48": "images/sizes/48.png",
+    "64": "images/sizes/128.png",
+    "128": "images/sizes/128.png"
+  },
+  "chromium:action": {
+    "default_icon": {
+      "16": "images/sizes/16.png",
+      "32": "images/sizes/32.png",
+      "48": "images/sizes/48.png",
+      "64": "images/sizes/128.png",
+      "128": "images/sizes/128.png"
+    }
+  },
+  "permissions": ["storage"],
+  "firefox:browser_action": {
+    "default_icon": {
+      "16": "images/sizes/16.png",
+      "32": "images/sizes/32.png",
+      "48": "images/sizes/48.png",
+      "64": "images/sizes/128.png",
+      "128": "images/sizes/128.png"
+    }
+  },
+  "options_page": "options/index.html",
+  "content_scripts": [
+    {
+      "matches": ["https://pracc.com/team/*"],
+      "js": ["content/scripts.tsx"]
+    }
+  ],
+  "author": "LeonTM"
+}
