@@ -16,7 +16,7 @@ A simple browser extension to optimize your scrim-searching experience on pracc.
 1. Download the latest release
 2. Extract the .zip folder
 3. Move to your browsers extension manager and turn on "Developer Mode" to unpack local extensions.
-4. Select the dist folder out of the extracted .zip
+4. Select the dist subfolder for your browser out of the extracted .zip
 5. Done
 
 ### Development
