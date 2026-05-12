@@ -483,6 +483,7 @@ export default function DetailedView() {
   const [teamName, setTeamName] = React.useState<string | null>(
     document.querySelector(".css-1y3oy13")?.innerHTML ?? null,
   );
+  console.log("Insights loading on: ", teamName);
   const [teamDescription, setTeamDescription] = React.useState<string | null>(
     document.querySelector(".css-1jhiktb")?.innerHTML ?? null,
   );
@@ -556,105 +557,111 @@ export default function DetailedView() {
     if (!teamDescription) return;
 
     setTeamLinks(
-      (stringUrlExtractor(teamDescription) as string[]).map((url) => {
-        const formattedUrl = url
-          .replace("https://", "")
-          .replace("http://", "")
-          .replace("www.", "");
+      (stringUrlExtractor(teamDescription) as string[])
+        .filter(
+          (url) => url.split(".")[0].length > 0 && url.split(".")[0].length > 1,
+        )
+        .map((url) => {
+          const formattedUrl = url
+            .replace("https://", "")
+            .replace("http://", "")
+            .replace("www.", "");
 
-        let parsedUrl: URL;
-        try {
-          parsedUrl = new URL(url);
-        } catch {
-          return {
-            type: "Unknown",
-            content: url,
-            title: "unknown",
-            display: formattedUrl,
-          };
-        }
-
-        const host = parsedUrl.hostname.toLowerCase().replace(/^www\./, "");
-        const path = parsedUrl.pathname;
-
-        if (host === "x.com" || host === "twitter.com") {
-          return {
-            type: "Unknown",
-            content: url,
-            title: "x.com",
-            display: formattedUrl,
-          };
-        } else if (host === "vlr.gg") {
-          if (path.includes("/player/")) {
+          let parsedUrl: URL;
+          try {
+            parsedUrl = new URL(url);
+          } catch {
             return {
-              type: "Player",
-              content: url.split("/")[url.split("/").length - 1],
-              title: "vlr.gg",
+              type: "Unknown",
+              content: url,
+              title: "unknown",
               display: formattedUrl,
             };
-          } else if (path.includes("/team/")) {
+          }
+
+          const host = parsedUrl.hostname.toLowerCase().replace(/^www\./, "");
+          const path = parsedUrl.pathname;
+
+          if (host === "x.com" || host === "twitter.com") {
+            return {
+              type: "Unknown",
+              content: url,
+              title: "x.com",
+              display: formattedUrl,
+            };
+          } else if (host === "vlr.gg") {
+            if (path.includes("/player/")) {
+              return {
+                type: "Player",
+                content: url,
+                title: "vlr.gg",
+                display:
+                  formattedUrl.split("/")[formattedUrl.split("/").length - 1],
+              };
+            } else if (path.includes("/team/")) {
+              return {
+                type: "Team",
+                content: url,
+                title: "vlr.gg",
+                display:
+                  formattedUrl.split("/")[formattedUrl.split("/").length - 1],
+              };
+            } else {
+              return {
+                type: "Unknown",
+                content: url,
+                title: "vlr.gg",
+                display: formattedUrl,
+              };
+            }
+          } else if (host === "tracker.gg") {
+            if (path.includes("/valorant/premier/teams/")) {
+              return {
+                type: "Team",
+                content: url,
+                title: "tracker.gg",
+                display: formattedUrl,
+              };
+            } else if (path.includes("/valorant/profile/riot/")) {
+              return {
+                type: "Player",
+                content: url,
+                title: "tracker.gg",
+                display: decodeURIComponent(
+                  path.replace("/valorant/profile/riot/", "").split("/")[0],
+                ),
+              };
+            } else {
+              return {
+                type: "Unknown",
+                content: url,
+                title: "tracker.gg",
+                display: formattedUrl,
+              };
+            }
+          } else if (host === "liquipedia.net") {
+            return {
+              type: "Unknown",
+              content: url,
+              title: "liquipedia.net",
+              display: formattedUrl,
+            };
+          } else if (host === "gamersclub.gg") {
             return {
               type: "Team",
-              content: url.split("/")[url.split("/").length - 1],
-              title: "vlr.gg",
+              content: url,
+              title: "gamersclub.gg",
               display: formattedUrl,
             };
           } else {
             return {
               type: "Unknown",
               content: url,
-              title: "vlr.gg",
+              title: "unknown",
               display: formattedUrl,
             };
           }
-        } else if (host === "tracker.gg") {
-          if (path.includes("/valorant/premier/teams/")) {
-            return {
-              type: "Team",
-              content: url,
-              title: "tracker.gg",
-              display: formattedUrl,
-            };
-          } else if (path.includes("/valorant/profile/riot/")) {
-            return {
-              type: "Player",
-              content: url,
-              title: "tracker.gg",
-              display: decodeURIComponent(
-                path.replace("/valorant/profile/riot/", "").split("/")[0],
-              ),
-            };
-          } else {
-            return {
-              type: "Unknown",
-              content: url,
-              title: "tracker.gg",
-              display: formattedUrl,
-            };
-          }
-        } else if (host === "liquipedia.net") {
-          return {
-            type: "Unknown",
-            content: url,
-            title: "liquipedia.net",
-            display: formattedUrl,
-          };
-        } else if (host === "gamersclub.gg") {
-          return {
-            type: "Team",
-            content: url,
-            title: "gamersclub.gg",
-            display: formattedUrl,
-          };
-        } else {
-          return {
-            type: "Unknown",
-            content: url,
-            title: "unknown",
-            display: formattedUrl,
-          };
-        }
-      }),
+        }),
     );
   }, [teamDescription]);
   React.useEffect(() => {
