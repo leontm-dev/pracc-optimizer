@@ -17,12 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
 import { Switch } from "@/components/ui/switch";
 import { Key } from "lucide-react";
 
 type Props = {
   title: string;
   description?: string;
+  loading?: boolean;
 } & (SettingsSelectProps | SettingsSwitchProps | SettingsSecretInputProps);
 type SettingsSwitchProps = {
   type: "switch";
@@ -46,7 +48,10 @@ export function SettingsComponent(props: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{props.title}</CardTitle>
+        <div className="flex flex-row gap-2">
+          {props.loading && <Spinner />}
+          <CardTitle>{props.title}</CardTitle>
+        </div>
         {props.description && (
           <CardDescription>{props.description}</CardDescription>
         )}
@@ -54,6 +59,7 @@ export function SettingsComponent(props: Props) {
       <CardContent>
         {props.type === "select" && (
           <Select
+            value={props.defaultValue}
             defaultValue={props.defaultValue}
             onValueChange={props.updateFunction}
           >
