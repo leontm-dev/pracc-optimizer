@@ -2,7 +2,7 @@
   "private": true,
   "name": "pracc-optimizer",
   "description": "Extension to optimize pracc.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "type": "module",
   "author": {
