@@ -2,35 +2,26 @@ import "./styles.css";
 import React from "react";
 import { SettingsComponent } from "./settings";
 import { Button } from "@/components/ui/button";
-import { AlertTriangleIcon, Info, Star } from "lucide-react";
+import { Info, Star } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function OptionsPage() {
   const [region, setRegion] = React.useState<string | null>(null);
   const [platform, setPlatform] = React.useState<string | null>(null);
   const [key, setKey] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState<boolean>(false);
   React.useEffect(() => {
-    browser.storage.local.get("pracc-optimizer-platform").then((response) => {
-      const platformResponse = response["pracc-optimizer-platform"];
-      if (!platformResponse || typeof platformResponse !== "string")
-        return setPlatform(null);
-
-      return setPlatform(platformResponse);
-    });
-    browser.storage.local.get("pracc-optimizer-region").then((response) => {
-      const regionResponse = response["pracc-optimizer-region"];
-      if (!regionResponse || typeof regionResponse !== "string")
-        return setRegion(null);
-
-      return setRegion(regionResponse);
-    });
-    browser.storage.local.get("pracc-optimizer-key").then((response) => {
-      const regionResponse = response["pracc-optimizer-key"];
-      if (!regionResponse || typeof regionResponse !== "string")
-        return setRegion(null);
-
-      return setRegion(regionResponse);
-    });
+    async function loadData() {
+      setLoading(true);
+      const localStorageResponse = await browser.storage.local.get();
+      setPlatform(
+        String(localStorageResponse["pracc-optimizer-platform"]) || null,
+      );
+      setRegion(String(localStorageResponse["pracc-optimizer-region"]) || null);
+      setKey(String(localStorageResponse["pracc-optimizer-key"]) || null);
+      setLoading(false);
+    }
+    loadData();
   }, []);
   return (
     <div className="flex w-full flex-col gap-4 p-4">
@@ -56,6 +47,7 @@ export default function OptionsPage() {
           setRegion(value);
         }}
         defaultValue={region || undefined}
+        loading={loading}
       />
       <SettingsComponent
         type="select"
@@ -70,6 +62,7 @@ export default function OptionsPage() {
           setPlatform(value);
         }}
         defaultValue={platform || undefined}
+        loading={loading}
       />
       <Alert>
         <Info />
@@ -83,7 +76,7 @@ export default function OptionsPage() {
           used for anything else than this extension and they will not get sent
           to any other person of interest. If you want to check the usage of
           your keys, the dashboard (link) provides a great visual representation
-          of the usage data. Guidelines & rate-limits for the
+          of the usage data. Guidelines & rate-limits for the{" "}
           <a href="https://github.com/Henrik-3/unofficial-valorant-api?tab=readme-ov-file">
             unofficial-valorant-api (github)
           </a>{" "}
@@ -99,6 +92,7 @@ export default function OptionsPage() {
           setKey(value);
         }}
         defaultValue={key || undefined}
+        loading={loading}
       />
       <div className="mt-8 flex flex-col gap-2">
         <p className="text-muted-foreground text-sm">
