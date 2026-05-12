@@ -14,6 +14,7 @@ import { DescriptionLinkComponent } from "./description-link";
 import { DetailedPlayer } from "./player-info";
 const stringUrlExtractor = require("string-url-extractor");
 import "./styles.css";
+import { Spinner } from "@/components/ui/spinner";
 
 export type Player = {
   name: string;
@@ -480,10 +481,10 @@ const rankedTiers = [
 ];
 export default function DetailedView() {
   const [teamName, setTeamName] = React.useState<string | null>(
-    document.querySelector(".sc-fHSyak")?.innerHTML ?? null,
+    document.querySelector(".css-1y3oy13")?.innerHTML ?? null,
   );
   const [teamDescription, setTeamDescription] = React.useState<string | null>(
-    document.getElementById("mui-5")?.innerHTML ?? null,
+    document.querySelector(".css-1jhiktb")?.innerHTML ?? null,
   );
   const [settingsPlatform, setSettingsPlatform] = React.useState<string | null>(
     null,
@@ -542,7 +543,7 @@ export default function DetailedView() {
   const [teamLinks, setTeamLinks] = React.useState<TeamLinks[]>([]);
   const [playerNames, setPlayerNames] = React.useState<string[]>(
     document
-      .querySelectorAll(".css-1a83j2z")
+      .querySelectorAll(".css-qamc6y")
       .entries()
       .toArray()
       .map(([_, elem]) => {
@@ -550,6 +551,7 @@ export default function DetailedView() {
       }),
   );
   const [players, setPlayers] = React.useState<Player[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
   React.useEffect(() => {
     if (!teamDescription) return;
 
@@ -586,14 +588,14 @@ export default function DetailedView() {
           if (path.includes("/player/")) {
             return {
               type: "Player",
-              content: url,
+              content: url.split("/")[url.split("/").length - 1],
               title: "vlr.gg",
               display: formattedUrl,
             };
           } else if (path.includes("/team/")) {
             return {
               type: "Team",
-              content: url,
+              content: url.split("/")[url.split("/").length - 1],
               title: "vlr.gg",
               display: formattedUrl,
             };
@@ -659,6 +661,7 @@ export default function DetailedView() {
     // Flag um Updates durch veraltete useEffect-Läufe zu unterbinden (Race Conditions vermeiden)
     let ignore = false;
 
+    setLoading(true);
     const fetchPlayers = async () => {
       // Optische Indikation: Wir fangen an zu laden
       setPlayers([]);
@@ -736,6 +739,7 @@ export default function DetailedView() {
       if (!ignore) {
         setPlayers(resolvedPlayers);
       }
+      setLoading(false);
     };
 
     fetchPlayers();
@@ -767,6 +771,7 @@ export default function DetailedView() {
           </div>
           <div className="flex flex-col gap-2">
             <h1 className="decoration-primary italic underline">Players</h1>
+            {loading && <Spinner />}
             {players.map((p, index) => (
               <DetailedPlayer player={p} key={index} />
             ))}
