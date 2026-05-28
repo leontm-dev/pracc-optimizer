@@ -75,7 +75,7 @@ export async function getPremierTeamDistribution(
     settings.region === "" ||
     !settings ||
     settings.platform == null ||
-    settings.platform
+    settings.platform === ""
   )
     return [];
 
