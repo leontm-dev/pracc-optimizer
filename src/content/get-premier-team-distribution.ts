@@ -64,15 +64,18 @@ export async function getPremierTeamDistribution(
     key: string | null;
     region: string | null;
     platform: string | null;
+    debug: boolean | null;
   },
 ): Promise<PremierTeam[]> {
   const teams: PremierTeam[] = [];
   if (
     settings.key == null ||
+    settings.key === "" ||
     settings.region == null ||
     settings.region === "" ||
     !settings ||
-    !settings.platform
+    settings.platform == null ||
+    settings.platform
   )
     return [];
 
@@ -86,7 +89,7 @@ export async function getPremierTeamDistribution(
       const fittingTeamCheck = !!teams.find((team) =>
         team.players.map((p) => p).includes(player.puuid),
       );
-      console.log(fittingTeamCheck);
+      if (settings.debug) console.log("FittingTeamCheck", fittingTeamCheck);
       if (fittingTeamCheck) return;
 
       const matchesResponse = await fetch(
@@ -98,21 +101,21 @@ export async function getPremierTeamDistribution(
           },
         },
       );
-      console.log(matchesResponse);
+      if (settings.debug) console.log("MatchesResponse", matchesResponse);
       if (!matchesResponse.ok) return;
 
       const matchesData = (await matchesResponse.json()).data;
-      console.log(matchesData);
+      if (settings.debug) console.log("MatchesData", matchesData);
       if (!matchesData) return;
 
       const lastMatch = matchesData[0];
-      console.log(lastMatch);
+      if (settings.debug) console.log("LastMatch", lastMatch);
       if (!lastMatch) return;
 
       const teamColor = lastMatch.players?.find(
         (p: any) => p?.puuid === player.puuid,
       )?.team_id;
-      console.log(teamColor);
+      if (settings.debug) console.log("TeamColor", teamColor);
       if (!teamColor) return;
 
       const teamData:
@@ -131,7 +134,7 @@ export async function getPremierTeamDistribution(
         | undefined = lastMatch.teams.find(
         (t: { team_id: string }) => t.team_id === teamColor,
       );
-      console.log(teamData);
+      if (settings.debug) console.log("TeamData", teamData);
       if (!teamData || !teamData.premier_roster) return;
 
       const teamResponse = await fetch(
@@ -141,7 +144,7 @@ export async function getPremierTeamDistribution(
           headers: { Authorization: settings.key || "", Accept: "*/*" },
         },
       );
-      console.log(teamResponse);
+      if (settings.debug) console.log("TeamResponse", teamResponse);
       if (!teamResponse.ok) return;
 
       const teamResponseData:
@@ -164,7 +167,7 @@ export async function getPremierTeamDistribution(
             };
           }
         | undefined = (await teamResponse.json()).data;
-      console.log(teamResponseData);
+      if (settings.debug) console.log("TeamResponseData", teamResponseData);
       if (!teamResponseData) return;
 
       teams.push({
