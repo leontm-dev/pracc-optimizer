@@ -198,5 +198,5 @@ export async function getPremierTeamDistribution(
   const cleanedTeams = [...new Set(teams.map((t) => t.id))]
     .map((t) => teams.find((team) => team.id === t))
     .filter((t) => t !== undefined);
-  return cleanedTeams.sort((a, b) => a.score - b.score);
+  return cleanedTeams.sort((a, b) => b.score - a.score);
 }

@@ -40,8 +40,7 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "content_scripts/content-0.css",
-        "content_scripts/styles.5eb09ad2.css"
+        "content_scripts/content-0.css"
       ],
       "matches": [
         "https://pracc.com/*"
