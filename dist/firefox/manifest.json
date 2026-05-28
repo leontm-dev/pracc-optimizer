@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "name": "pracc-optimizer",
   "description": "Optimize your pracc scrim search with custom utils.",
   "icons": {
@@ -39,6 +39,6 @@
   },
   "web_accessible_resources": [
     "content_scripts/content-0.css",
-    "content_scripts/styles.444ef55e.css"
+    "content_scripts/styles.5eb09ad2.css"
   ]
 }
