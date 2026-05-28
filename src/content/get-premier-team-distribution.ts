@@ -92,109 +92,113 @@ export async function getPremierTeamDistribution(
       if (settings.debug) console.log("FittingTeamCheck", fittingTeamCheck);
       if (fittingTeamCheck) return;
 
-      const matchesResponse = await fetch(
-        `https://api.henrikdev.xyz/valorant/v4/matches/${settings.region}/${settings.platform}/${player.name}/${player.tag}?mode=premier&size=1`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: settings.key || "",
+      try {
+        const matchesResponse = await fetch(
+          `https://api.henrikdev.xyz/valorant/v4/matches/${settings.region}/${settings.platform}/${player.name}/${player.tag}?mode=premier&size=1`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: settings.key || "",
+            },
           },
-        },
-      );
-      if (settings.debug) console.log("MatchesResponse", matchesResponse);
-      if (!matchesResponse.ok) return;
+        );
+        if (settings.debug) console.log("MatchesResponse", matchesResponse);
+        if (!matchesResponse.ok) return;
 
-      const matchesData = (await matchesResponse.json()).data;
-      if (settings.debug) console.log("MatchesData", matchesData);
-      if (!matchesData) return;
+        const matchesData = (await matchesResponse.json()).data;
+        console.log(matchesData);
+        if (!matchesData) return;
 
-      const lastMatch = matchesData[0];
-      if (settings.debug) console.log("LastMatch", lastMatch);
-      if (!lastMatch) return;
+        const lastMatch = matchesData[0];
+        if (settings.debug) console.log("LastMatch", lastMatch);
+        if (!lastMatch) return;
 
-      const teamColor = lastMatch.players?.find(
-        (p: any) => p?.puuid === player.puuid,
-      )?.team_id;
-      if (settings.debug) console.log("TeamColor", teamColor);
-      if (!teamColor) return;
+        const teamColor = lastMatch.players?.find(
+          (p: any) => p?.puuid === player.puuid,
+        )?.team_id;
+        if (settings.debug) console.log("TeamColor", teamColor);
+        if (!teamColor) return;
 
-      const teamData:
-        | {
-            team_id: string;
-            premier_roster: {
-              id?: string;
-              name?: string;
-              tag?: string;
-              members?: string[];
-              customization?: {
-                image?: string;
+        const teamData:
+          | {
+              team_id: string;
+              premier_roster: {
+                id?: string;
+                name?: string;
+                tag?: string;
+                members?: string[];
+                customization?: {
+                  image?: string;
+                };
+              } | null;
+            }
+          | undefined = lastMatch.teams.find(
+          (t: { team_id: string }) => t.team_id === teamColor,
+        );
+        if (settings.debug) console.log("TeamData", teamData);
+        if (!teamData || !teamData.premier_roster) return;
+
+        const teamResponse = await fetch(
+          `https://api.henrikdev.xyz/valorant/v1/premier/${teamData.premier_roster.name}/${teamData.premier_roster.tag}`,
+          {
+            method: "GET",
+            headers: { Authorization: settings.key || "", Accept: "*/*" },
+          },
+        );
+        if (settings.debug) console.log("TeamResponse", teamResponse);
+        if (!teamResponse.ok) return;
+
+        const teamResponseData:
+          | {
+              id: string;
+              name: string;
+              tag: string;
+              stats: {
+                wins: number;
+                matches: number;
+                losses: number;
+                rounds_won: number;
+                rounds_lost: number;
               };
-            } | null;
-          }
-        | undefined = lastMatch.teams.find(
-        (t: { team_id: string }) => t.team_id === teamColor,
-      );
-      if (settings.debug) console.log("TeamData", teamData);
-      if (!teamData || !teamData.premier_roster) return;
+              placement: {
+                points: number;
+                conference: string;
+                division: number;
+                place: number;
+              };
+            }
+          | undefined = (await teamResponse.json()).data;
+        if (settings.debug) console.log("TeamResponseData", teamResponseData);
+        if (!teamResponseData) return;
 
-      const teamResponse = await fetch(
-        `https://api.henrikdev.xyz/valorant/v1/premier/${teamData.premier_roster.name}/${teamData.premier_roster.tag}`,
-        {
-          method: "GET",
-          headers: { Authorization: settings.key || "", Accept: "*/*" },
-        },
-      );
-      if (settings.debug) console.log("TeamResponse", teamResponse);
-      if (!teamResponse.ok) return;
+        teams.push({
+          icon: teamData.premier_roster.customization?.image || "",
+          id: teamData.premier_roster.id || "",
+          name: teamData.premier_roster.name || "",
+          tag: teamData.premier_roster.tag || "",
+          placement: {
+            points: teamResponseData.placement.points,
+            division:
+              translateDivision(teamResponseData.placement.division) || "",
+            conference: teamResponseData.placement.conference,
+            place: teamResponseData.placement.place,
+          },
+          stats: teamResponseData.stats,
+          players: teamData.premier_roster.members || [],
+          score: calculateTeamScore(
+            teamData.premier_roster.members ?? [],
+            players
+              .map((p) => {
+                if (p.possible) return p.puuid;
 
-      const teamResponseData:
-        | {
-            id: string;
-            name: string;
-            tag: string;
-            stats: {
-              wins: number;
-              matches: number;
-              losses: number;
-              rounds_won: number;
-              rounds_lost: number;
-            };
-            placement: {
-              points: number;
-              conference: string;
-              division: number;
-              place: number;
-            };
-          }
-        | undefined = (await teamResponse.json()).data;
-      if (settings.debug) console.log("TeamResponseData", teamResponseData);
-      if (!teamResponseData) return;
-
-      teams.push({
-        icon: teamData.premier_roster.customization?.image || "",
-        id: teamData.premier_roster.id || "",
-        name: teamData.premier_roster.name || "",
-        tag: teamData.premier_roster.tag || "",
-        placement: {
-          points: teamResponseData.placement.points,
-          division:
-            translateDivision(teamResponseData.placement.division) || "",
-          conference: teamResponseData.placement.conference,
-          place: teamResponseData.placement.place,
-        },
-        stats: teamResponseData.stats,
-        players: teamData.premier_roster.members || [],
-        score: calculateTeamScore(
-          teamData.premier_roster.members ?? [],
-          players
-            .map((p) => {
-              if (p.possible) return p.puuid;
-
-              return undefined;
-            })
-            .filter((p) => p !== undefined),
-        ),
-      });
+                return undefined;
+              })
+              .filter((p) => p !== undefined),
+          ),
+        });
+      } catch {
+        return;
+      }
     }),
   );
 
