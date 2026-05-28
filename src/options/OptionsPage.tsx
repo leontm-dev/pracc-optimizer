@@ -20,9 +20,7 @@ export default function OptionsPage() {
       );
       setRegion(String(localStorageResponse["pracc-optimizer-region"]) || null);
       setKey(String(localStorageResponse["pracc-optimizer-key"]) || null);
-      setDebug(
-        localStorageResponse["pracc-optimizer-debug"] === "true" || null,
-      );
+      setDebug(localStorageResponse["pracc-optimizer-debug"] === "true");
       setLoading(false);
     }
     loadData();
