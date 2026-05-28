@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Player } from "./detailed-view";
+import type { Player } from "./get-player-data";
 
 type Props = {
   player: Player;
@@ -7,22 +7,24 @@ type Props = {
 
 export function DetailedPlayer({ player }: Props) {
   return (
-    <div className="flex flex-row items-center gap-4">
+    <div className="flex flex-row items-center gap-4 border p-2 shadow-sm">
       <div className="flex flex-col gap-1">
         <div className="flex flex-row flex-wrap items-center gap-2">
           <div className="flex flex-row items-center gap-0 text-lg">
-            <h1>{player.name}</h1>
-            {player.tagLine && (
-              <span className="text-muted-foreground">#{player.tagLine}</span>
+            <h1>{player.name || player.title}</h1>
+            {player.tag && (
+              <span className="text-muted-foreground">#{player.tag}</span>
             )}
           </div>
-          {player.trackerUrl && (
+          {player.name && player.tag && player.possible && (
             <a
-              href={player.trackerUrl}
+              href={new URL(
+                `https://tracker.gg/valorant/profile/riot/${encodeURIComponent(player.name + "#" + player.tag)}`,
+              ).toString()}
               title={`Status: ${player.status}`}
               target="_blank"
             >
-              <Button variant={"ghost"} size={"icon"}>
+              <Button variant={"ghost"} size={"icon"} className="size-6">
                 <img
                   className="object-contain"
                   src={
@@ -33,25 +35,28 @@ export function DetailedPlayer({ player }: Props) {
             </a>
           )}
         </div>
-        <div className="flex flex-row items-center gap-2">
-          {player.rank && (
-            <div className="flex flex-row items-center gap-1">
-              {player.rankIcon && (
-                <img className="size-6" src={player.rankIcon} />
-              )}
-              {player.rank}
-            </div>
-          )}
-          {player.peak && player.rank && <span>•</span>}
-          {player.peak && (
-            <div className="flex flex-row items-center gap-1">
-              {player.peakIcon && (
-                <img className="size-6" src={player.peakIcon} />
-              )}
-              {player.peak} ({player.peakSeason})
-            </div>
-          )}
-        </div>
+        {player.possible && (
+          <div className="flex flex-row items-center gap-2">
+            {player.rank && (
+              <div className="flex flex-row items-center gap-1 text-sm">
+                {player.rank.icon && (
+                  <img className="size-4" src={player.rank.icon} />
+                )}
+                {player.rank.name ?? "Unknown"}
+              </div>
+            )}
+            {player.peakRank && player.rank && <span>•</span>}
+            {player.peakRank && (
+              <div className="flex flex-row items-center gap-1 text-sm">
+                {player.peakRank.icon && (
+                  <img className="size-4" src={player.peakRank.icon} />
+                )}
+                {player.peakRank.name ?? "Unknown"} (
+                {player.peakRank.season ?? "Season: Unknown"})
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

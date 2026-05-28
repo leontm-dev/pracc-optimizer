@@ -11,7 +11,7 @@ export function DescriptionLinkComponent({ link }: Props) {
       href={link.content}
       title={link.content}
       target="_blank"
-      className="flex flex-row items-center gap-2 border border-dashed p-2"
+      className="flex flex-row items-center gap-2 border p-2 no-underline decoration-0 shadow-sm"
     >
       {link.title === "x.com" && (
         <img
@@ -54,9 +54,11 @@ export function DescriptionLinkComponent({ link }: Props) {
         />
       )}
       {link.title === "unknown" && <CircleQuestionMark className="size-8" />}
-      <div className="flex flex-col gap-0">
-        <h1 className="text-sm">{link.display}</h1>
-        <p className="text-muted-foreground text-xs">Context: {link.type}</p>
+      <div className="flex flex-col gap-0 no-underline decoration-0">
+        <h1 className="text-sm no-underline decoration-0">{link.display}</h1>
+        <p className="text-muted-foreground text-xs no-underline decoration-0">
+          Context: {link.type}
+        </p>
       </div>
     </a>
   );
