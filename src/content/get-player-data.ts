@@ -69,36 +69,40 @@ export async function getPlayerData({
           status: "unknown",
         } as Player;
 
-      const playerCheck = await fetch(
-        `https://api.henrikdev.xyz/valorant/v3/mmr/${settings.region}/${settings.platform}/${name}/${tag}`,
-        {
-          method: "GET",
-          headers: { Authorization: settings.key },
-        },
-      );
-      if (!playerCheck.ok)
-        return { name, tag, possible: false, title: playerTitle } as Player; // return for failing player check
-      const playerCheckData = await playerCheck.json();
-      if (!playerCheckData)
-        return { name, tag, possible: false, title: playerTitle } as Player; // return for missing player data
+      try {
+        const playerCheck = await fetch(
+          `https://api.henrikdev.xyz/valorant/v3/mmr/${settings.region}/${settings.platform}/${name}/${tag}`,
+          {
+            method: "GET",
+            headers: { Authorization: settings.key },
+          },
+        );
+        if (!playerCheck.ok)
+          return { name, tag, possible: false, title: playerTitle } as Player; // return for failing player check
+        const playerCheckData = await playerCheck.json();
+        if (!playerCheckData)
+          return { name, tag, possible: false, title: playerTitle } as Player; // return for missing player data
 
-      return {
-        name,
-        tag,
-        possible: true,
-        status: "found",
-        puuid: playerCheckData.data?.account?.puuid || "",
-        peakRank: {
-          name: playerCheckData.data?.peak?.tier?.name,
-          season: playerCheckData.data?.peak?.season?.short,
-          icon: getRankedTierIcon(playerCheckData.data?.peak?.tier.id),
-        },
-        title: playerTitle,
-        rank: {
-          name: playerCheckData.data?.current?.tier?.name,
-          icon: getRankedTierIcon(playerCheckData.data?.current?.tier.id),
-        },
-      } as Player;
+        return {
+          name,
+          tag,
+          possible: true,
+          status: "found",
+          puuid: playerCheckData.data?.account?.puuid || "",
+          peakRank: {
+            name: playerCheckData.data?.peak?.tier?.name,
+            season: playerCheckData.data?.peak?.season?.short,
+            icon: getRankedTierIcon(playerCheckData.data?.peak?.tier.id),
+          },
+          title: playerTitle,
+          rank: {
+            name: playerCheckData.data?.current?.tier?.name,
+            icon: getRankedTierIcon(playerCheckData.data?.current?.tier.id),
+          },
+        } as Player;
+      } catch {
+        return { name, tag, possible: false, title: playerTitle } as Player; // return for failing player check
+      }
     }),
   );
 
