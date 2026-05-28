@@ -9,6 +9,7 @@ export default function OptionsPage() {
   const [region, setRegion] = React.useState<string | null>(null);
   const [platform, setPlatform] = React.useState<string | null>(null);
   const [key, setKey] = React.useState<string | null>(null);
+  const [debug, setDebug] = React.useState<boolean | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   React.useEffect(() => {
     async function loadData() {
@@ -19,6 +20,9 @@ export default function OptionsPage() {
       );
       setRegion(String(localStorageResponse["pracc-optimizer-region"]) || null);
       setKey(String(localStorageResponse["pracc-optimizer-key"]) || null);
+      setDebug(
+        localStorageResponse["pracc-optimizer-debug"] === "true" || null,
+      );
       setLoading(false);
     }
     loadData();
@@ -93,6 +97,19 @@ export default function OptionsPage() {
         }}
         defaultValue={key || undefined}
         loading={loading}
+      />
+      <SettingsComponent
+        type="switch"
+        title="Debug mode"
+        description="If you want to modify this extension, fix a bug or report an issue to the github repository, the debug mode is helpful, because it basically logs everything into the console. Use with care!"
+        updateFunction={(value) => {
+          browser.storage.local.set({ "pracc-optimizer-debug": String(value) });
+          setDebug(value);
+        }}
+        defaultValue={debug || undefined}
+        loading={loading}
+        onLabel="On"
+        offLabel="Off"
       />
       <div className="mt-8 flex flex-col gap-2">
         <p className="text-muted-foreground text-sm">

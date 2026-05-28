@@ -57,52 +57,27 @@ export default function DetailedView() {
     null,
   );
   const [settingsKey, setSettingsKey] = React.useState<string | null>(null);
+  const [settingsDebug, setSettingsDebug] = React.useState<boolean | null>(
+    null,
+  );
   React.useEffect(() => {
-    browser.storage.local
-      .get("pracc-optimizer-platform")
-      .then((res) => {
-        if (
-          !res["pracc-optimizer-platform"] ||
-          typeof res["pracc-optimizer-platform"] !== "string"
-        )
-          return setSettingsPlatform(null);
-
-        return setSettingsPlatform(res["pracc-optimizer-platform"]);
-      })
-      .catch((err) => {
-        console.error(err);
-        return setSettingsPlatform(null);
-      });
-    browser.storage.local
-      .get("pracc-optimizer-region")
-      .then((res) => {
-        if (
-          !res["pracc-optimizer-region"] ||
-          typeof res["pracc-optimizer-region"] !== "string"
-        )
-          return setSettingsRegion(null);
-
-        return setSettingsRegion(res["pracc-optimizer-region"]);
-      })
-      .catch((err) => {
-        console.error(err);
-        return setSettingsRegion(null);
-      });
-    browser.storage.local
-      .get("pracc-optimizer-key")
-      .then((res) => {
-        if (
-          !res["pracc-optimizer-key"] ||
-          typeof res["pracc-optimizer-key"] !== "string"
-        )
-          return setSettingsKey(null);
-
-        return setSettingsKey(res["pracc-optimizer-key"]);
-      })
-      .catch((err) => {
-        console.error(err);
-        return setSettingsKey(null);
-      });
+    async function loadData() {
+      const localStorageResponse = await browser.storage.local.get();
+      setSettingsPlatform(
+        String(localStorageResponse["pracc-optimizer-platform"]) || null,
+      );
+      setSettingsRegion(
+        String(localStorageResponse["pracc-optimizer-region"]) || null,
+      );
+      setSettingsKey(
+        String(localStorageResponse["pracc-optimizer-key"]) || null,
+      );
+      setSettingsDebug(
+        String(localStorageResponse["pracc-optimizer-debug"]) === "true" ||
+          null,
+      );
+    }
+    loadData();
   }, []);
   const [teamLinks, setTeamLinks] = React.useState<TeamLinks[]>([]);
   const [playerNames, setPlayerNames] = React.useState<string[]>(
@@ -271,6 +246,7 @@ export default function DetailedView() {
         key: settingsKey,
         region: settingsRegion,
         platform: settingsPlatform,
+        debug: settingsDebug,
       });
       if (!ignore) {
         setTeams(resolvedTeams);
