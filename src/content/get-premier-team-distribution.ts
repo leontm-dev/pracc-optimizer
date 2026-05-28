@@ -69,7 +69,8 @@ export async function getPremierTeamDistribution(
   const teams: PremierTeam[] = [];
   if (
     settings.key == null ||
-    !settings.region == null ||
+    settings.region == null ||
+    settings.region === "" ||
     !settings ||
     !settings.platform
   )
