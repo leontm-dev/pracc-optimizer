@@ -37,6 +37,10 @@
     {
       "matches": ["https://pracc.com/team/*"],
       "js": ["content/scripts.tsx"]
+    },
+    {
+      "matches": ["https://pracc.com/search"],
+      "js": ["content/comment-display.script.tsx"]
     }
   ],
   "author": "LeonTM"
