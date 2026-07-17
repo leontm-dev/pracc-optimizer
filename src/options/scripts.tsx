@@ -1,6 +1,5 @@
 import { createRoot } from "react-dom/client";
 import SidebarApp from "./OptionsPage";
-import "./styles.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const rootElement = document.getElementById("root");
