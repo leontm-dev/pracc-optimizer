@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Sparkles, Star } from "lucide-react";
+import { PlusCircle, Send, Sparkles, Star } from "lucide-react";
 import React from "react";
 import { DescriptionLinkComponent } from "./description-link";
 import { DetailedPlayer } from "./player-info";
@@ -28,6 +28,13 @@ import {
 } from "@/components/ui/accordion";
 import { PremierTeamView } from "./premier-team-view";
 import { Badge } from "@/components/ui/badge";
+import { TeamCommentComponent } from "./team-comment";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 
 export type TeamLinks = {
   title:
@@ -40,6 +47,12 @@ export type TeamLinks = {
   type: "Player" | "Team" | "Unknown";
   display: string;
   content: string;
+};
+
+export type TeamComment = {
+  createdAt: string;
+  content: string;
+  pinned: boolean;
 };
 
 export default function DetailedView() {
@@ -60,6 +73,7 @@ export default function DetailedView() {
   const [settingsDebug, setSettingsDebug] = React.useState<boolean | null>(
     null,
   );
+  const [comments, setComments] = React.useState<TeamComment[]>([]);
   React.useEffect(() => {
     async function loadData() {
       const localStorageResponse = await browser.storage.local.get();
@@ -77,6 +91,22 @@ export default function DetailedView() {
           null,
       );
     }
+    loadData();
+  }, []);
+  React.useEffect(() => {
+    const id = window.location.pathname.replace("/team/", "");
+
+    async function loadData() {
+      const localStorage = await browser.storage.local.get();
+
+      if (!Array.isArray(localStorage[`pracc-optimizer-comments-${id}`]))
+        return;
+
+      setComments(
+        localStorage[`pracc-optimizer-comments-${id}`] as TeamComment[],
+      );
+    }
+
     loadData();
   }, []);
   const [teamLinks, setTeamLinks] = React.useState<TeamLinks[]>([]);
@@ -204,12 +234,10 @@ export default function DetailedView() {
     );
   }, [teamDescription]);
   React.useEffect(() => {
-    // Flag um Updates durch veraltete useEffect-Läufe zu unterbinden (Race Conditions vermeiden)
     let ignore = false;
 
     setPlayersLoading(true);
     const fetchPlayers = async () => {
-      // Optische Indikation: Wir fangen an zu laden
       setPlayers([]);
 
       const resolvedPlayers = await getPlayerData({
@@ -220,7 +248,7 @@ export default function DetailedView() {
           platform: settingsPlatform || undefined,
         },
       });
-      // Verhindere Update, falls der Effect bereits durch einen neuen überschrieben wurde
+
       if (!ignore) {
         setPlayers(resolvedPlayers);
       }
@@ -229,7 +257,6 @@ export default function DetailedView() {
 
     fetchPlayers();
 
-    // Cleanup-Funktion
     return () => {
       ignore = true;
     };
@@ -261,6 +288,20 @@ export default function DetailedView() {
       ignore = true;
     };
   }, [players, settingsKey, settingsRegion, settingsPlatform]);
+
+  const [newCommentValue, setNewCommentValue] = React.useState<string>("");
+  React.useEffect(() => {
+    const id = window.location.pathname.replace("/team/", "");
+    const key = `pracc-optimizer-comments-${id}`;
+    const record: Record<string, unknown> = {};
+    record[key] = comments;
+    browser.storage.local
+      .set(record)
+      .then(() => {
+        console.log("Added comment");
+      })
+      .catch((err) => console.error("Couldn't add comment", err));
+  }, [comments]);
   return (
     <TooltipProvider>
       <Card className="mt-4">
@@ -276,6 +317,71 @@ export default function DetailedView() {
             {teamLinks.map((l, index) => (
               <DescriptionLinkComponent link={l} key={index} />
             ))}
+          </div>
+          <div className="flex flex-row flex-wrap items-center gap-1">
+            {comments
+              .sort((a, b) => {
+                if (b.pinned !== a.pinned) {
+                  return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
+                }
+                return (
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+                );
+              })
+              .map((c) => (
+                <TeamCommentComponent
+                  key={c.createdAt}
+                  comment={c}
+                  removeComment={(id) =>
+                    setComments((prev) =>
+                      prev.filter((p) => p.createdAt !== id),
+                    )
+                  }
+                  togglePinnedState={(id) =>
+                    setComments((prev) =>
+                      prev.map((p) => {
+                        if (p.createdAt === id) {
+                          return { ...p, pinned: !p.pinned };
+                        }
+
+                        return p;
+                      }),
+                    )
+                  }
+                />
+              ))}
+            <InputGroup>
+              <InputGroupAddon align={"inline-start"}>
+                <PlusCircle />
+              </InputGroupAddon>
+              <InputGroupInput
+                onChange={(ev) => setNewCommentValue(ev.target.value)}
+                type="text"
+                placeholder="Add new comment to this team"
+              />
+              <InputGroupAddon align={"inline-end"}>
+                {newCommentValue.length !== 0 && (
+                  <InputGroupButton
+                    onClick={() => {
+                      if (newCommentValue.length === 0) return;
+
+                      setComments((prev) => [
+                        ...prev,
+                        {
+                          createdAt: new Date().toString(),
+                          content: newCommentValue,
+                          pinned: false,
+                        },
+                      ]);
+                      setNewCommentValue("");
+                    }}
+                  >
+                    <Send />
+                  </InputGroupButton>
+                )}
+              </InputGroupAddon>
+            </InputGroup>
           </div>
           <Accordion type="multiple">
             <AccordionItem value="players">
