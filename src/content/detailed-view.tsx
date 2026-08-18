@@ -59,7 +59,7 @@ export default function DetailedView() {
   const [teamName, setTeamName] = React.useState<string | null>(
     document.querySelector(".css-1y3oy13")?.innerHTML ?? null,
   );
-  console.log("Insights loading on: ", teamName);
+
   const [teamDescription, setTeamDescription] = React.useState<string | null>(
     document.querySelector(".css-1jhiktb")?.innerHTML ?? null,
   );
@@ -73,6 +73,7 @@ export default function DetailedView() {
   const [settingsDebug, setSettingsDebug] = React.useState<boolean | null>(
     null,
   );
+  console.log("Insights loading on: ", teamName);
   const [comments, setComments] = React.useState<TeamComment[]>([]);
   React.useEffect(() => {
     async function loadData() {
@@ -298,7 +299,7 @@ export default function DetailedView() {
     browser.storage.local
       .set(record)
       .then(() => {
-        console.log("Added comment");
+        settingsDebug && console.log("Added comment");
       })
       .catch((err) => console.error("Couldn't add comment", err));
   }, [comments]);

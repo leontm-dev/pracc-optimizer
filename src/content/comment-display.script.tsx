@@ -23,7 +23,7 @@ function injectExtension() {
     return;
   }
 
-  const parentElements = document.querySelectorAll(".sc-dUipGc");
+  const parentElements = document.querySelectorAll(".HnZGg");
   if (parentElements.length === 0) return;
 
   parentElements.forEach((parentElement) => {
@@ -31,10 +31,12 @@ function injectExtension() {
       return;
     }
 
+    console.log(parentElement);
+
     const rootDiv = document.createElement("div");
     rootDiv.setAttribute("data-extension-pracc-optimizer", "true");
 
-    parentElement.querySelector(".sc-brePNt")?.appendChild(rootDiv);
+    parentElement.querySelector(".ZqITY")?.appendChild(rootDiv);
 
     const shadowRoot = rootDiv.attachShadow({ mode: "open" });
     const styleElement = document.createElement("style");
@@ -45,8 +47,9 @@ function injectExtension() {
     });
 
     const linkElement = parentElement.querySelector(
-      ".sc-dubCtV",
+      ".sc-WKhSL",
     ) as HTMLAnchorElement | null;
+    console.log(linkElement);
     if (!linkElement) {
       console.log("Link element with teamId not found");
       return;
