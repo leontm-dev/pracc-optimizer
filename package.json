@@ -17,7 +17,7 @@
     "lucide-react": "^1.8.0",
     "postcss": "^8.5.9",
     "radix-ui": "^1.4.3",
-    "react": "^18.3.1",
+    "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "shadcn": "^4.3.0",
     "string-url-extractor": "^1.0.1",
