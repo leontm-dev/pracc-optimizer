@@ -33,7 +33,7 @@
     "@types/react-dom": "^19.2.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^10.9.1",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.5",
     "extension": "^4.0.32",
     "postcss": "^8.4.47",
